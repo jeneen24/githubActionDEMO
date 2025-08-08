@@ -1,0 +1,35 @@
+name: ML Model Training Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths: ['src/**', 'data/**', 'requirements.txt']
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Run data validation
+      run: python src/validate_data.py
+      
+    - name: Train model
+      run: python src/train_model.py
+      
+    - name: Evaluate model
+      run: python src/evaluate_model.py
+      
+    - name: Deploy if performance good
+      if: success()
+      run: python src/deploy_model.py
