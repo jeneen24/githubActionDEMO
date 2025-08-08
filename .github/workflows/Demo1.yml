@@ -1,35 +1,12 @@
-name: ML Model Training Pipeline
+name: Hello World Workflow
 
-on:
-  push:
-    branches: [ main ]
-    paths: ['src/**', 'data/**', 'requirements.txt']
+on: [push]
 
 jobs:
-  train-model:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        
-    - name: Run data validation
-      run: python src/validate_data.py
-      
-    - name: Train model
-      run: python src/train_model.py
-      
-    - name: Evaluate model
-      run: python src/evaluate_model.py
-      
-    - name: Deploy if performance good
-      if: success()
-      run: python src/deploy_model.py
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run a simple script
+        run: echo "Hello, GitHub Actions!"
